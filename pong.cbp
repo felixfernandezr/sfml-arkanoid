@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="pong" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/pong" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add library="sfml-system-d" />
+					<Add library="sfml-network-d" />
+					<Add library="sfml-audio-d" />
+					<Add library="sfml-window-d" />
+					<Add library="sfml-graphics-d" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/pong" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="sfml-system" />
+					<Add library="sfml-network" />
+					<Add library="sfml-audio" />
+					<Add library="sfml-window" />
+					<Add library="sfml-graphics" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="SFML/include" />
+		</Compiler>
+		<Linker>
+			<Add directory="SFML/lib" />
+		</Linker>
+		<Unit filename="include/Barra.h" />
+		<Unit filename="include/Dupla.h" />
+		<Unit filename="include/EstadoJuego.h" />
+		<Unit filename="include/Juego.h" />
+		<Unit filename="include/Logica.h" />
+		<Unit filename="include/Niveles.h" />
+		<Unit filename="include/Obstaculo.h" />
+		<Unit filename="include/Pelota.h" />
+		<Unit filename="include/Utils.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="src/Barra.cpp" />
+		<Unit filename="src/Juego.cpp" />
+		<Unit filename="src/Logica.cpp" />
+		<Unit filename="src/Niveles.cpp" />
+		<Unit filename="src/Obstaculo.cpp" />
+		<Unit filename="src/Pelota.cpp" />
+		<Unit filename="src/Utils.cpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
