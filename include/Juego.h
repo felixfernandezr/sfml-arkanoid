@@ -13,31 +13,28 @@
 class Juego
 {
     public:
-        Juego();
-        void comenzar(); // Starts the game
+        Juego(EstadoJuego& estadoActual);
 
-    private:
         void juegoLoop(sf::RenderWindow& ventana);
         void eventoHandler(sf::RenderWindow& ventana);
         void juega(sf::RenderWindow& ventana);
-        void renders(sf::RenderWindow& ventana);
+        void rendersJuego(sf::RenderWindow& ventana);
 
-        void funcionPausa(sf::RenderWindow& ventana);
-        void funcionSalir(sf::RenderWindow& ventana);
-        void pausaRecursi(void);
+        void funcionPausaInGame(sf::RenderWindow& ventana);
+        void funcionSalirInGame(sf::RenderWindow& ventana);
 
         Barra barra;
         Pelota pelota;
         Obstaculo obstaculos;
         Logica logica;
         Niveles nivel;
+        EstadoJuego& estadoJuego;
 
         unsigned int puntaje;
         unsigned int record;
         unsigned int vidas;
-
-        bool finDelJuego;
-        EstadoJuego estadoJuego;
+        unsigned int nivelActual;
+        bool finDelJuego = false;
 };
 
 #endif // JUEGO_H_INCLUDED

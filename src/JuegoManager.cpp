@@ -6,14 +6,29 @@
 #include "Utils.h"
 
 // Class constructor
-JuegoManager::JuegoManager() : nivelActual(1) // Setting level to first
+JuegoManager::JuegoManager() : nivelActual(1), estadoActual(EstadoJuego::MenuInico), juego(estadoActual) // Setting level to first
 {
-    this->estadoActual = EstadoJuego::MenuInico; // First state start menu
     this->gameOver = false;
+
+    // Create a font for text rendering
+    if (!this->fuente.loadFromFile("assets/fonts/xirod.ttf"))
+    {
+        std::cerr << "Failed to load font!" << std::endl;
+        return;
+    }
+}
+
+void JuegoManager::comenzar()
+{
+    // Create the game window
+    sf::RenderWindow ventana(sf::VideoMode(800, 600), "SFML Game");
+
+    // Run the game loop
+    this->jugar(ventana);
 }
 
 // This function serves as a state handler for the game
-void JuegoManager::jugar()
+void JuegoManager::jugar(sf::RenderWindow& ventana)
 {
     while(!this->gameOver) // Done while gameOver is false
     {
@@ -21,63 +36,59 @@ void JuegoManager::jugar()
         {
             switch(this->estadoActual)
             {
-                case EstadoJuego::Play:
+                case EstadoJuego::Juega:
                     this->inicializarNivel(); // Level handling
-                    this->juego.comenzar(); // Game-loop
+                    this->juego.juegoLoop(ventana); // Game-loop
                     this->nivelActual++; // Level raise
+                    this->juego.finDelJuego = false;
                     this->juego.pelota.reiniciar(); // Ball position reset
 
-                    if(this->nivelActual < 5 && this->juego.vidas > 0) // Compares to 5 because nivelActual is raised before if statement
-                    {
-                        this->cambiarEstado(EstadoJuego::NivelCompleto);
-                    }
+                    // Compares to 5 because nivelActual is raised before if statement
+                    if(this->nivelActual < 4 && this->juego.vidas > 0)
+                        this->estadoActual = EstadoJuego::NivelCompleto;
                     else if(this->juego.vidas == 0)
-                    {
-                        this->resetValores();
-                        this->cambiarEstado(EstadoJuego::GameOver);
-                    }
+                        this->estadoActual = EstadoJuego::GameOver;
                     else
-                    {
-                        //this->resetValores();
-                        this->cambiarEstado(EstadoJuego::FinDelJuego);
-                    }
+                        this->estadoActual = EstadoJuego::FinDelJuego;
+
                     break;
 
                 case EstadoJuego::MenuInico:
-                    this->mostrarMenuInicio(); // call to "ui" function
+                    this->mostrarMenuInicio(ventana); // call to "ui" function
                     break;
 
                 case EstadoJuego::NivelCompleto:
-                    this->mostrarNivelCompleto();
-                    this->cambiarEstado(EstadoJuego::Play);
+                    this->mostrarNivelCompleto(ventana);
+                    //this->estadoActual = EstadoJuego::Juega;
                     break;
 
                 case EstadoJuego::GameOver:
-                    this->mostrarGameOver(); // Show game over "ui"
-                    this->cambiarEstado(EstadoJuego::MenuInico);
+                    this->mostrarGameOver(ventana); // Show game over "ui"
+                    this->resetValores();
+                    //this->estadoActual = EstadoJuego::MenuInico;
                     break;
 
                 case EstadoJuego::FinDelJuego:
-                    this->mostrarPantallaFin(); // Show end screen "ui"
-                    this->mostrarCreditos(); // Show game credits
+                    this->mostrarPantallaFin(ventana); // Show end screen "ui"
+                    this->mostrarCreditos(ventana); // Show game credits
                     this->resetValores();
-                    this->cambiarEstado(EstadoJuego::MenuInico);
+                    //this->estadoActual = EstadoJuego::MenuInico;
                     break;
 
                 case EstadoJuego::Creditos:
-                    this->mostrarCreditos();
-                    this->cambiarEstado(EstadoJuego::MenuInico);
+                    this->mostrarCreditos(ventana);
+                    //this->estadoActual = EstadoJuego::MenuInico;
                     break;
 
-                case EstadoJuego::Exit:
-                    this->mostrarPantallaExit(); // If user presses 'y' gameOver is set to true and ends program,
-                    this->cambiarEstado(EstadoJuego::MenuInico); // Back to main menu
+                case EstadoJuego::Salir:
+                    this->mostrarPantallaExit(ventana); // If user presses 'y' gameOver is set to true and ends program,
+                    //this->estadoActual = EstadoJuego::MenuInico; // Back to main menu
                     break;
             }
         }
         catch (const std::exception& e)
         {
-            this->cambiarEstado(EstadoJuego::MenuInico);
+            this->estadoActual = EstadoJuego::MenuInico;
         }
     }
 }
@@ -95,114 +106,154 @@ void JuegoManager::inicializarNivel() {
             this->juego.obstaculos.inicializarObstaculos(niveles.nivel3()); // Then randomized in Obstaculos obstaculos.inicializarObstaculos()
             break;
         default:
-            this->cambiarEstado(EstadoJuego::GameOver); // No more levels. When level > 3 this catches game end.
+            this->estadoActual = EstadoJuego::GameOver; // No more levels. When level > 3 this catches game end.
             break;
     }
 }
 
  // Start screen UI
-void JuegoManager::mostrarMenuInicio()
+void JuegoManager::mostrarMenuInicio(sf::RenderWindow& ventana)
 {
-    system("cls");
-    while (true) {
-        // Clear the screen
-        std::cout << "\033[2J\033[1;1H";
+    // Prepare main menu text
+    std::string divLine = "======================================";
+    std::string txt1 = divLine + "\nWelcome to Arkanot  \n" + divLine + "\n       1.  Start Game\n       2. Show Credits\n       3. Exit Game\n    Select an option: ";
+    sf::Text menuInicioTxt(txt1, this->fuente, 24);
+    menuInicioTxt.setPosition(200, 180);
+    menuInicioTxt.setFillColor(sf::Color::White);
 
-        // Display menu options
-        std::cout << "====================\n";
-        std::cout << "  Welcome to Arkanot  \n";
-        std::cout << "====================\n";
-        std::cout << "1. Start Game\n";
-        std::cout << "2. Show Credits\n";
-        std::cout << "3. Exit Game\n";
-        std::cout << "Select an option: ";
-
-        // Wait for user input
-        char choice = _getch();
-        switch (choice) {
-            case '1':
-                this->resetValores();
-                cambiarEstado(EstadoJuego::Play);
-                return; // Exit the menu function
-            case '2':
-                cambiarEstado(EstadoJuego::Creditos);
-                return;
-            case '3':
-                cambiarEstado(EstadoJuego::Exit);
-                return;
-            default:
-                std::cout << "\nInvalid option. Please try again.\n";
-                Utils::sleepSegundos(1);
+    while (this->estadoActual == EstadoJuego::MenuInico)
+    {
+        sf::Event evento;
+        while (ventana.pollEvent(evento))
+        {
+            if (evento.type == sf::Event::KeyPressed)
+            {
+                switch (evento.key.code)
+                {
+                    case sf::Keyboard::Num1:
+                        this->estadoActual = EstadoJuego::Juega;
+                        return;
+                    case sf::Keyboard::Num2:
+                        this->estadoActual = EstadoJuego::Creditos;
+                        return;
+                    case sf::Keyboard::Num3:
+                        this->estadoActual = EstadoJuego::Salir;
+                        return;
+                    default:
+                        break;
+                }
+            }
         }
+        ventana.clear(sf::Color::Blue);
+        ventana.draw(menuInicioTxt);
+        ventana.display();
     }
 }
 
-void JuegoManager::mostrarNivelCompleto()
+void JuegoManager::mostrarNivelCompleto(sf::RenderWindow& ventana)
 {
-    system("cls");
-    std::cout << "Well Done! You Completed Level " << this->nivelActual - 1 << "!" << std::endl;
-    std::cout << "Your Score is Currently " << this->juego.record << "!" << std::endl;
-    std::cout << "Press Any Key to Continue" << std::endl;
+    // Prepare level completed text
+    std::string txt1 = "Well Done! You Completed Level " + std::to_string(this->nivelActual - 1) + "!";
+    sf::Text nivelCompletoTxt(txt1, this->fuente, 24);
+    nivelCompletoTxt.setPosition(60, 200);
+    nivelCompletoTxt.setFillColor(sf::Color::White);
 
-    // Wait for user input
-    _getch();
+    ventana.draw(nivelCompletoTxt);
+    ventana.display();
+
+    Utils::sleepSegundos(3);
+
+    this->estadoActual = EstadoJuego::Juega;
 }
 
 // End screem UI
-void JuegoManager::mostrarGameOver()
+void JuegoManager::mostrarGameOver(sf::RenderWindow& ventana)
 {
-    system("cls");
-    std::cout << "Game Over!" << std::endl;
-    std::cout << "Your Best Score Was: " << this->juego.record << "!" << std::endl;
-    std::cout << "Press Any Key to Exit" << std::endl;
+    // Prepare game over text
+    std::string txt1 = "         Game Over!\nYour Record Was: " + std::to_string(this->juego.record);
+    sf::Text gameOverTxt(txt1, this->fuente, 24);
+    gameOverTxt.setPosition(200, 200);
+    gameOverTxt.setFillColor(sf::Color::White);
 
-    // Wait for user input
-    _getch();
+    ventana.clear(sf::Color::Blue);
+    ventana.draw(gameOverTxt);
+    ventana.display();
+
+    Utils::sleepSegundos(3);
+
+    this->estadoActual = EstadoJuego::MenuInico;
 }
 
-void JuegoManager::mostrarPantallaFin()
+void JuegoManager::mostrarPantallaFin(sf::RenderWindow& ventana)
 {
-    system("cls");
-    std::cout << "Congratulations! You Won the Game!" << std::endl;
-    std::cout << "Your Best Score Was: " << this->juego.record << "!" << std::endl;
-    std::cout << "Press Any Key and Go to Credits" << std::endl;
+    // Prepare end screen text
+    std::string txt1 = "  Congratulations!\n You Won the Game!!!\nYour Record Was: " + std::to_string(this->juego.record);
+    sf::Text endScreenTxt(txt1, this->fuente, 24);
+    endScreenTxt.setPosition(200, 200);
+    endScreenTxt.setFillColor(sf::Color::White);
 
-    // Wait for user input
-    _getch();
+    ventana.clear(sf::Color::Blue);
+    ventana.draw(endScreenTxt);
+    ventana.display();
+
+    Utils::sleepSegundos(3);
+
+    this->estadoActual = EstadoJuego::Creditos;
 }
 
-void JuegoManager::mostrarCreditos()
+void JuegoManager::mostrarCreditos(sf::RenderWindow& ventana)
 {
-    system("cls");
-    std::cout << "A JKNBH777 Creation" << std::endl;
-    std::cout << "Press Any Key and Go to Main Menu" << std::endl;
+    // Prepare credits text
+    std::string txt1 = "              A JKNBH777 Creation\n\nPress Any Key and Go to Main Menu";
+    sf::Text creditsTxt(txt1, this->fuente, 24);
+    creditsTxt.setPosition(50, 200);
+    creditsTxt.setFillColor(sf::Color::White);
 
-    // Wait for user input
-    _getch();
-}
-
-void JuegoManager::mostrarPantallaExit()
-{
-    system("cls");
-    std::cout << "You Are About to Exit the Game. Are You Sure?" << std::endl;
-    std::cout << "Press 'y' to Confirm or Any Key and Go to Main Menu." << std::endl;
-
-    char tecla = _getch();
-    if (tecla == 'y')
+    while (this->estadoActual == EstadoJuego::Creditos)
     {
-        this->gameOver = true;
+        sf::Event evento;
+        while (ventana.pollEvent(evento))
+        {
+            if (evento.type == sf::Event::KeyPressed)
+            {
+                this->estadoActual = EstadoJuego::MenuInico;
+            }
+        }
+        ventana.clear(sf::Color::Blue);
+        ventana.draw(creditsTxt);
+        ventana.display();
     }
 }
 
-// Change game state
-void JuegoManager::cambiarEstado(EstadoJuego nuevoEstado)
+void JuegoManager::mostrarPantallaExit(sf::RenderWindow& ventana)
 {
-    this->estadoActual = nuevoEstado;
+    // Prepare exit text
+    std::string txt1 = "You Are About to Exit the Game.\n                Are You Sure?\n           Press 'y' to Confirm\nor Any Key and Go to Main Menu.";
+    sf::Text exitTxt(txt1, this->fuente, 24);
+    exitTxt.setPosition(88, 200);
+    exitTxt.setFillColor(sf::Color::White);
+
+    while (this->estadoActual == EstadoJuego::Salir)
+    {
+        sf::Event evento;
+        while (ventana.pollEvent(evento))
+        {
+            if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Y)
+                ventana.close();
+            else if (evento.type == sf::Event::KeyPressed)
+                this->estadoActual = EstadoJuego::MenuInico;
+        }
+        ventana.clear(sf::Color::Blue);
+        ventana.draw(exitTxt);
+        ventana.display();
+    }
 }
+
 //Reset game default values
 void JuegoManager::resetValores()
 {
     this->nivelActual = 1;
+
     this->juego.puntaje = 0;
     this->juego.record = 0;
     this->juego.vidas = 3;

@@ -6,28 +6,17 @@
 #include "Utils.h"
 
 // Constructor
-Juego::Juego(): barra(400), obstaculos(400), logica(), finDelJuego(false), estadoJuego(EstadoJuego::Juega) // Initialize with Bar in axis x=40 and Obstacles width = 4
+Juego::Juego(EstadoJuego& estadoActual): barra(400), obstaculos(800), finDelJuego(false), estadoJuego(estadoActual) // Initialize with Bar in axis x=40 and Obstacles width = 4
 {
     this->puntaje = 0; // Score and record = 0
     this->record = 0;
     this->vidas = 3;
 }
 
-void Juego::comenzar()
-{
-    // Create the game window
-    sf::RenderWindow ventana(sf::VideoMode(800, 600), "SFML Game");
-
-    // Run the game loop
-    this->juegoLoop(ventana);
-}
-
 void Juego::juegoLoop(sf::RenderWindow& ventana)
 {
     // Frame rate control
     sf::Clock clock;
-
-    this->obstaculos.inicializarObstaculos(this->nivel.nivel1());
 
      // Main game loop
     while (ventana.isOpen())
@@ -38,43 +27,17 @@ void Juego::juegoLoop(sf::RenderWindow& ventana)
         {
             this->juega(ventana);
         }
+        else
+        {
+            this->rendersJuego(ventana);
+            break;
+        }
 
-        this->renders(ventana);
+        this->rendersJuego(ventana);
 
         // Frame rate control (60 FPS)
         sf::Time elapsed = clock.restart();
         sf::sleep(sf::seconds(1.f / 60.f) - elapsed);
-    }
-}
-
-void Juego::eventoHandler(sf::RenderWindow& ventana)
-{
-    sf::Event evento;
-    while (ventana.pollEvent(evento))
-    {
-        if (evento.type == sf::Event::Closed)
-            ventana.close();
-
-        if (evento.type == sf::Event::KeyPressed)
-        {
-            switch (evento.key.code)
-            {
-                case sf::Keyboard::P:
-                    this->funcionPausa(ventana);
-                    break;
-                case sf::Keyboard::Escape:
-                    this->funcionSalir(ventana);
-                    break;
-                case sf::Keyboard::A:
-                    this->barra.mover(-1, ventana);
-                    break;
-                case sf::Keyboard::D:
-                    this->barra.mover(1, ventana);
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 }
 
@@ -84,13 +47,13 @@ void Juego::juega(sf::RenderWindow& ventana)
 
     if(this->finDelJuego)
     {
-        this->estadoJuego = EstadoJuego::Salir;
+        this->estadoJuego = EstadoJuego::NivelCompleto;
     }
 
     this->pelota.mover();
 }
 
-void Juego::renders(sf::RenderWindow& ventana)
+void Juego::rendersJuego(sf::RenderWindow& ventana)
 {
     ventana.clear(sf::Color::Blue);
 
@@ -120,7 +83,38 @@ void Juego::renders(sf::RenderWindow& ventana)
     ventana.display();
 }
 
-void Juego::funcionPausa(sf::RenderWindow& ventana)
+void Juego::eventoHandler(sf::RenderWindow& ventana)
+{
+    sf::Event evento;
+    while (ventana.pollEvent(evento))
+    {
+        if (evento.type == sf::Event::Closed)
+            ventana.close();
+
+        if (evento.type == sf::Event::KeyPressed)
+        {
+            switch (evento.key.code)
+            {
+                case sf::Keyboard::P:
+                    this->funcionPausaInGame(ventana);
+                    break;
+                case sf::Keyboard::Escape:
+                    this->funcionSalirInGame(ventana);
+                    break;
+                case sf::Keyboard::A:
+                    this->barra.mover(-1, ventana);
+                    break;
+                case sf::Keyboard::D:
+                    this->barra.mover(1, ventana);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+void Juego::funcionPausaInGame(sf::RenderWindow& ventana)
 {
     this->estadoJuego = EstadoJuego::Pausa;
 
@@ -152,7 +146,7 @@ void Juego::funcionPausa(sf::RenderWindow& ventana)
     }
 }
 
-void Juego::funcionSalir(sf::RenderWindow& ventana)
+void Juego::funcionSalirInGame(sf::RenderWindow& ventana)
 {
     this->estadoJuego = EstadoJuego::Salir;
 
@@ -188,7 +182,7 @@ void Juego::funcionSalir(sf::RenderWindow& ventana)
                 }
                 else if (evento.key.code == sf::Keyboard::N)
                 {
-                    this->funcionPausa(ventana);
+                    this->funcionPausaInGame(ventana);
                 }
             }
         }
@@ -197,13 +191,3 @@ void Juego::funcionSalir(sf::RenderWindow& ventana)
         ventana.display();
     }
 }
-
-
-
-
-
-
-
-
-
-

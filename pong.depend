@@ -227,17 +227,18 @@
 	<thread>
 	<chrono>
 
-1733940874 source:c:\users\felix\desktop\arkanosfml\main.cpp
+1734204669 source:c:\users\felix\desktop\arkanosfml\main.cpp
 	<SFML/Graphics.hpp>
-	"Juego.h"
+	"JuegoManager.h"
 
-1733937326 c:\users\felix\desktop\arkanosfml\include\juegomanager.h
+1734293063 c:\users\felix\desktop\arkanosfml\include\juegomanager.h
+	<SFML/Graphics.hpp>
 	"EstadoJuego.h"
 	"Juego.h"
 
 1733938223 c:\users\felix\desktop\arkanosfml\include\estadojuego.h
 
-1733947234 c:\users\felix\desktop\arkanosfml\include\juego.h
+1734292299 c:\users\felix\desktop\arkanosfml\include\juego.h
 	<SFML/Graphics.hpp>
 	"Pelota.h"
 	"Barra.h"
@@ -268,7 +269,7 @@
 1733197214 c:\users\felix\desktop\arkanosfml\include\niveles.h
 	<vector>
 
-1733941882 c:\users\felix\desktop\arkanosfml\include\logica.h
+1733953757 c:\users\felix\desktop\arkanosfml\include\logica.h
 	"Pelota.h"
 	"Barra.h"
 	"Obstaculo.h"
@@ -276,7 +277,7 @@
 1733342053 c:\users\felix\desktop\arkanosfml\include\estadomanager.h
 	"EstadoJuego.h"
 
-1733946050 source:c:\users\felix\desktop\arkanosfml\src\barra.cpp
+1734204638 source:c:\users\felix\desktop\arkanosfml\src\barra.cpp
 	"Barra.h"
 	<iostream>
 	<windows.h>
@@ -285,46 +286,48 @@
 	"Cancha.h"
 	<iostream>
 
-1733949331 source:c:\users\felix\desktop\arkanosfml\src\juego.cpp
+1734306510 source:c:\users\felix\desktop\arkanosfml\src\juego.cpp
 	"Juego.h"
 	<SFML/Graphics.hpp>
 	<iostream>
 	<conio.h>
 	"Utils.h"
 
-1733463271 c:\users\felix\desktop\arkanosfml\include\utils.h
+1733953781 c:\users\felix\desktop\arkanosfml\include\utils.h
+	<SFML/Graphics.hpp>
 	<thread>
 	<chrono>
 	"Dupla.h"
 
-1733886726 source:c:\users\felix\desktop\arkanosfml\src\juegomanager.cpp
+1734306484 source:c:\users\felix\desktop\arkanosfml\src\juegomanager.cpp
 	"JuegoManager.h"
 	<iostream>
 	<conio.h>
 	"Juego.h"
 	"Utils.h"
 
-1733942158 source:c:\users\felix\desktop\arkanosfml\src\logica.cpp
+1733958612 source:c:\users\felix\desktop\arkanosfml\src\logica.cpp
 	"Logica.h"
 	<iostream>
 	"Utils.h"
 
-1733949261 source:c:\users\felix\desktop\arkanosfml\src\niveles.cpp
+1734306484 source:c:\users\felix\desktop\arkanosfml\src\niveles.cpp
 	"Niveles.h"
 	<iostream>
 
-1733950340 source:c:\users\felix\desktop\arkanosfml\src\obstaculo.cpp
+1733952326 source:c:\users\felix\desktop\arkanosfml\src\obstaculo.cpp
 	"Obstaculo.h"
 	<iostream>
 	<windows.h>
 
-1733947395 source:c:\users\felix\desktop\arkanosfml\src\pelota.cpp
+1733958432 source:c:\users\felix\desktop\arkanosfml\src\pelota.cpp
 	"Pelota.h"
 	<iostream>
 	<windows.h>
 
-1733465313 source:c:\users\felix\desktop\arkanosfml\src\utils.cpp
+1733957766 source:c:\users\felix\desktop\arkanosfml\src\utils.cpp
 	"Utils.h"
+	<SFML/Graphics.hpp>
 	<iostream>
 	<thread>
 	<chrono>
@@ -1247,21 +1250,16 @@
 	<thread>
 	<chrono>
 
-1733959278 source:c:\users\felix\desktop\arkanosfml - working\src\juego.cpp
+1733958978 source:c:\users\felix\desktop\arkanosfml - working\src\juego.cpp
 	"Juego.h"
 	<SFML/Graphics.hpp>
 	<iostream>
 	<conio.h>
 	"Utils.h"
 
-1733952648 source:c:\users\felix\desktop\gh\arkanotsfml\src\barra.cpp
-	"Barra.h"
-	<iostream>
-	<windows.h>
-
-1733939869 c:\users\felix\desktop\gh\arkanotsfml\include\barra.h
+1734204669 source:c:\users\felix\desktop\gh\arkanotsfml\main.cpp
 	<SFML/Graphics.hpp>
-	"Dupla.h"
+	"JuegoManager.h"
 
 1731186047 c:\users\felix\desktop\gh\arkanotsfml\sfml\include\sfml\graphics.hpp
 	<SFML/Window.hpp>
@@ -1681,17 +1679,14 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1733191350 c:\users\felix\desktop\gh\arkanotsfml\include\dupla.h
-	<stdexcept>
-
-1733959278 source:c:\users\felix\desktop\gh\arkanotsfml\src\juego.cpp
-	"Juego.h"
+1734293063 c:\users\felix\desktop\gh\arkanotsfml\include\juegomanager.h
 	<SFML/Graphics.hpp>
-	<iostream>
-	<conio.h>
-	"Utils.h"
+	"EstadoJuego.h"
+	"Juego.h"
 
-1733947234 c:\users\felix\desktop\gh\arkanotsfml\include\juego.h
+1733938223 c:\users\felix\desktop\gh\arkanotsfml\include\estadojuego.h
+
+1734292299 c:\users\felix\desktop\gh\arkanotsfml\include\juego.h
 	<SFML/Graphics.hpp>
 	"Pelota.h"
 	"Barra.h"
@@ -1702,6 +1697,13 @@
 	"EstadoManager.h"
 
 1733944133 c:\users\felix\desktop\gh\arkanotsfml\include\pelota.h
+	<SFML/Graphics.hpp>
+	"Dupla.h"
+
+1733191350 c:\users\felix\desktop\gh\arkanotsfml\include\dupla.h
+	<stdexcept>
+
+1733939869 c:\users\felix\desktop\gh\arkanotsfml\include\barra.h
 	<SFML/Graphics.hpp>
 	"Dupla.h"
 
@@ -1723,7 +1725,17 @@
 1733342053 c:\users\felix\desktop\gh\arkanotsfml\include\estadomanager.h
 	"EstadoJuego.h"
 
-1733938223 c:\users\felix\desktop\gh\arkanotsfml\include\estadojuego.h
+1734204638 source:c:\users\felix\desktop\gh\arkanotsfml\src\barra.cpp
+	"Barra.h"
+	<iostream>
+	<windows.h>
+
+1734309878 source:c:\users\felix\desktop\gh\arkanotsfml\src\juego.cpp
+	"Juego.h"
+	<SFML/Graphics.hpp>
+	<iostream>
+	<conio.h>
+	"Utils.h"
 
 1733953781 c:\users\felix\desktop\gh\arkanotsfml\include\utils.h
 	<SFML/Graphics.hpp>
@@ -1731,12 +1743,19 @@
 	<chrono>
 	"Dupla.h"
 
+1734306484 source:c:\users\felix\desktop\gh\arkanotsfml\src\juegomanager.cpp
+	"JuegoManager.h"
+	<iostream>
+	<conio.h>
+	"Juego.h"
+	"Utils.h"
+
 1733958612 source:c:\users\felix\desktop\gh\arkanotsfml\src\logica.cpp
 	"Logica.h"
 	<iostream>
 	"Utils.h"
 
-1733952502 source:c:\users\felix\desktop\gh\arkanotsfml\src\niveles.cpp
+1734306484 source:c:\users\felix\desktop\gh\arkanotsfml\src\niveles.cpp
 	"Niveles.h"
 	<iostream>
 

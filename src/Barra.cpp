@@ -9,6 +9,7 @@ Barra::Barra(float inicialX)
     this->barra.setFillColor(sf::Color::Red);
     this->barra.setPosition(inicialX, 550.f); // Set position near the bottom
     this->velocidad = 20.0f;
+    this->inicialPosX = inicialX;
 }
 
 // Bar movement

@@ -54,6 +54,7 @@
 		<Unit filename="include/Dupla.h" />
 		<Unit filename="include/EstadoJuego.h" />
 		<Unit filename="include/Juego.h" />
+		<Unit filename="include/JuegoManager.h" />
 		<Unit filename="include/Logica.h" />
 		<Unit filename="include/Niveles.h" />
 		<Unit filename="include/Obstaculo.h" />
@@ -62,6 +63,7 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Barra.cpp" />
 		<Unit filename="src/Juego.cpp" />
+		<Unit filename="src/JuegoManager.cpp" />
 		<Unit filename="src/Logica.cpp" />
 		<Unit filename="src/Niveles.cpp" />
 		<Unit filename="src/Obstaculo.cpp" />
