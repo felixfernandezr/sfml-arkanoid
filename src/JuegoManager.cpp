@@ -1,6 +1,7 @@
 #include "JuegoManager.h"
 #include <iostream>
 #include <conio.h>
+#include <SFML/Audio.hpp>
 
 #include "Juego.h"
 #include "Utils.h"
@@ -38,6 +39,7 @@ void JuegoManager::jugar(sf::RenderWindow& ventana)
             {
                 case EstadoJuego::Juega:
                     this->inicializarNivel(); // Level handling
+                    this->inicializarMusica();
                     this->juego.juegoLoop(ventana); // Game-loop
                     this->nivelActual++; // Level raise
                     this->juego.finDelJuego = false;
@@ -94,8 +96,10 @@ void JuegoManager::jugar(sf::RenderWindow& ventana)
 }
 
 // Level handler
-void JuegoManager::inicializarNivel() {
-    switch (this->nivelActual) {
+void JuegoManager::inicializarNivel()
+{
+    switch (this->nivelActual)
+    {
         case 1:
             this->juego.obstaculos.inicializarObstaculos(niveles.nivel1()); // Sends a template of obstacle distribution (check Niveles niveles.nivel1())
             break;
@@ -111,15 +115,54 @@ void JuegoManager::inicializarNivel() {
     }
 }
 
+void JuegoManager::inicializarMusica()
+{
+    std::string rutaMusica = "";
+
+    if(this->nivelActual == 1)
+    {
+        rutaMusica = "assets/sounds/nivel1.mp3";
+    }
+    else if(this->nivelActual == 2)
+    {
+        rutaMusica = "assets/sounds/nivel2.mp3";
+    }
+    else if(this->nivelActual == 3)
+    {
+        rutaMusica = "assets/sounds/nivel3.mp3";
+    }
+
+    // Load the music file
+    if (!this->musicaJuego.openFromFile(rutaMusica))
+    {
+        std::cerr << "Error: Could not load music file!" << std::endl;
+        return;
+    }
+
+    this->musicaJuego.setLoop(true);
+    this->musicaJuego.setVolume(50.f);
+    this->musicaJuego.play();
+}
+
  // Start screen UI
 void JuegoManager::mostrarMenuInicio(sf::RenderWindow& ventana)
 {
+    // Load the music file
+    if (!this->musicaJuego.openFromFile("assets/sounds/menuInicio.mp3"))
+    {
+        std::cerr << "Error: Could not load music file!" << std::endl;
+        return;
+    }
+
     // Prepare main menu text
     std::string divLine = "======================================";
     std::string txt1 = divLine + "\nWelcome to Arkanot  \n" + divLine + "\n       1.  Start Game\n       2. Show Credits\n       3. Exit Game\n    Select an option: ";
     sf::Text menuInicioTxt(txt1, this->fuente, 24);
     menuInicioTxt.setPosition(200, 180);
     menuInicioTxt.setFillColor(sf::Color::White);
+
+    this->musicaJuego.setVolume(50.f);
+    this->musicaJuego.play();
 
     while (this->estadoActual == EstadoJuego::MenuInico)
     {
@@ -152,6 +195,13 @@ void JuegoManager::mostrarMenuInicio(sf::RenderWindow& ventana)
 
 void JuegoManager::mostrarNivelCompleto(sf::RenderWindow& ventana)
 {
+    // Load the music file
+    if (!this->musicaJuego.openFromFile("assets/sounds/nivelCompleto.mp3"))
+    {
+        std::cerr << "Error: Could not load music file!" << std::endl;
+        return;
+    }
+
     // Prepare level completed text
     std::string txt1 = "Well Done! You Completed Level " + std::to_string(this->nivelActual - 1) + "!";
     sf::Text nivelCompletoTxt(txt1, this->fuente, 24);
@@ -161,6 +211,9 @@ void JuegoManager::mostrarNivelCompleto(sf::RenderWindow& ventana)
     ventana.draw(nivelCompletoTxt);
     ventana.display();
 
+    this->musicaJuego.setVolume(50.f);
+    this->musicaJuego.play();
+
     Utils::sleepSegundos(3);
 
     this->estadoActual = EstadoJuego::Juega;
@@ -169,6 +222,13 @@ void JuegoManager::mostrarNivelCompleto(sf::RenderWindow& ventana)
 // End screem UI
 void JuegoManager::mostrarGameOver(sf::RenderWindow& ventana)
 {
+    // Load the music file
+    if (!this->musicaJuego.openFromFile("assets/sounds/gameOver.mp3"))
+    {
+        std::cerr << "Error: Could not load music file!" << std::endl;
+        return;
+    }
+
     // Prepare game over text
     std::string txt1 = "         Game Over!\nYour Record Was: " + std::to_string(this->juego.record);
     sf::Text gameOverTxt(txt1, this->fuente, 24);
@@ -178,6 +238,9 @@ void JuegoManager::mostrarGameOver(sf::RenderWindow& ventana)
     ventana.clear(sf::Color::Blue);
     ventana.draw(gameOverTxt);
     ventana.display();
+
+    this->musicaJuego.setVolume(50.f);
+    this->musicaJuego.play();
 
     Utils::sleepSegundos(3);
 

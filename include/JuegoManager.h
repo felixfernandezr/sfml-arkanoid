@@ -1,6 +1,7 @@
 #ifndef JUEGOMANAGER_H_INCLUDED
 #define JUEGOMANAGER_H_INCLUDED
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "EstadoJuego.h"
 #include "Juego.h"
@@ -13,6 +14,7 @@ class JuegoManager {
         void comenzar(void);
         void jugar(sf::RenderWindow& ventana);
         void inicializarNivel(void);
+        void inicializarMusica(void);
 
         void mostrarMenuInicio(sf::RenderWindow& ventana);
         void mostrarNivelCompleto(sf::RenderWindow& ventana);
@@ -30,6 +32,7 @@ class JuegoManager {
         Juego juego;
         Niveles niveles;
         sf::Font fuente;
+        sf::Music musicaJuego;
         bool gameOver;
 };
 
